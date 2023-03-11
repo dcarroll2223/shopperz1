@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import data from './data.js';
@@ -36,6 +37,12 @@ app.get('/api/products/:id', (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+);
 
 const port = process.env.PORT || 5000;
 
